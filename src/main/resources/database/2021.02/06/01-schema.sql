@@ -13,26 +13,21 @@ CREATE TABLE Invoice (
     date_of_payment TIMESTAMP NOT NULL,
     payment_method VARCHAR(250) NOT NULL,
     date_of_created TIMESTAMP NOT NULL,
-    date_of_update TIMESTAMP,
-    FOREIGN KEY (seller_id) REFERENCES Seller(seller_id),
-    FOREIGN KEY (buyer_id) REFERENCES Buyer(buyer_id)
+    date_of_update TIMESTAMP
 );
 
 CREATE TABLE Seller (
     seller_id SERIAL PRIMARY KEY,
     company_name VARCHAR(250) NOT NULL,
     address_id BIGINT,
-    nip INTEGER NOT NULL,
-    FOREIGN KEY (address_id) REFERENCES Adress(address_id)
-
+    nip INTEGER NOT NULL
 );
 
 CREATE TABLE Buyer (
     buyer_id SERIAL PRIMARY KEY,
     company_name VARCHAR(250) NOT NULL,
     address_id BIGINT,
-    nip INTEGER NOT NULL,
-    FOREIGN KEY (address_id) REFERENCES Adress(address_id)
+    nip INTEGER NOT NULL
 );
 
 CREATE TABLE Adress (
@@ -51,8 +46,7 @@ CREATE TABLE Invoice_items (
     vat_rate INTEGER NOT NULL,
     net_price MONEY NOT NULL,
     net_value MONEY NOT NULL,
-    gross_value MONEY NOT NULL,
-    FOREIGN KEY (invoice_id) REFERENCES Invoice(invoice_id)
+    gross_value MONEY NOT NULL
 );
 
 
