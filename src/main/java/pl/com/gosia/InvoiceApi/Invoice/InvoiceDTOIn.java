@@ -7,9 +7,9 @@ import java.time.LocalDateTime;
 @Value
 public class InvoiceDTOIn {
     String invoiceNumber;
-    Long sellerId;
-    Long buyerId;
-    int bankAccountNumber;
+    String sellerNip;
+    String buyerNip;
+    String bankAccountNumber;
     String Comments;
     LocalDateTime dateOfIssue;
     LocalDateTime dateOfSale;

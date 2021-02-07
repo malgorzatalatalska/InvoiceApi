@@ -4,22 +4,15 @@
 ALTER TABLE Invoice
 ADD CONSTRAINT fk_seller
 FOREIGN KEY (seller_id)
-REFERENCES Seller (seller_id);
-
---changeset mlatalska:3
+REFERENCES Company (company_id);
 
 ALTER TABLE Invoice
 ADD CONSTRAINT fk_buyer
 FOREIGN KEY (buyer_id)
-REFERENCES Buyer (buyer_id);
+REFERENCES Company (company_id);
 
-ALTER TABLE Seller
-ADD CONSTRAINT fk_seller_adress
-FOREIGN KEY (address_id)
-REFERENCES Adress (address_id);
-
-ALTER TABLE Buyer
-ADD CONSTRAINT fk_buyer_adress
+ALTER TABLE Company
+ADD CONSTRAINT fk_company_adress
 FOREIGN KEY (address_id)
 REFERENCES Adress (address_id);
 
