@@ -6,7 +6,7 @@ CREATE TABLE Invoice (
     invoice_number VARCHAR(250) NOT NULL,
     seller_id BIGINT NOT NULL,
     buyer_id BIGINT NOT NULL,
-    bank_account_number VARCHAR(250) NOT NULL,
+    bank_account_number VARCHAR(250),
     comments VARCHAR(250),
     date_of_issue TIMESTAMP NOT NULL,
     date_of_sale TIMESTAMP NOT NULL,
@@ -14,30 +14,32 @@ CREATE TABLE Invoice (
     payment_method VARCHAR(250) NOT NULL,
     date_of_created TIMESTAMP NOT NULL,
     date_of_update TIMESTAMP,
+    FOREIGN KEY (seller_id) REFERENCES Seller(seller_id),
+    FOREIGN KEY (buyer_id) REFERENCES Buyer(buyer_id)
 );
 
 CREATE TABLE Seller (
     seller_id SERIAL PRIMARY KEY,
     company_name VARCHAR(250) NOT NULL,
-    address_id BIGINT NOT NULL,
+    address_id BIGINT,
     nip INTEGER NOT NULL,
-    FOREIGN KEY (seller_id) REFERENCES Invoice(invoice_id)
+    FOREIGN KEY (address_id) REFERENCES Adress(address_id)
+
 );
 
 CREATE TABLE Buyer (
     buyer_id SERIAL PRIMARY KEY,
     company_name VARCHAR(250) NOT NULL,
-    address_id BIGINT NOT NULL,
+    address_id BIGINT,
     nip INTEGER NOT NULL,
-    FOREIGN KEY (buyer_id) REFERENCES Invoice(buyer_id)
+    FOREIGN KEY (address_id) REFERENCES Adress(address_id)
 );
 
 CREATE TABLE Adress (
     address_id SERIAL PRIMARY KEY,
-    street VARCHAR(250) NOT NULL,
-    city VARCHAR(250) NOT NULL,
-    zip_code VARCHAR(250) NOT NULL,
-    FOREIGN KEY (address_id) REFERENCES Invoice(buyer_id)
+    street VARCHAR(250),
+    city VARCHAR(250),
+    zip_code VARCHAR(250)
 );
 
 CREATE TABLE Invoice_items (
@@ -54,7 +56,7 @@ CREATE TABLE Invoice_items (
 );
 
 
---not null zając sie tym
+
 
 
 
