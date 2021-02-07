@@ -4,9 +4,8 @@ import lombok.Value;
 import pl.com.gosia.InvoiceApi.Adress.AdressDTO;
 
 @Value
-public class CompanyDTO {
-    Long companyId;
+public class NewCompany {
     String companyName;
-    AdressDTO adressDTO;
+    String adress;
     String nip;
 }

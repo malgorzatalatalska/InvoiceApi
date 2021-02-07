@@ -1,7 +1,7 @@
 package pl.com.gosia.InvoiceApi.Invoice;
 
 import lombok.Value;
-import pl.com.gosia.InvoiceApi.Company.CompanyDTO;
+import pl.com.gosia.InvoiceApi.Company.CompanyView;
 
 import java.time.LocalDateTime;
 
@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 public class InvoiceDTOOut {
     Long invoiceId;
     String invoiceNumber;
-    CompanyDTO companyDTOSeller;
-    CompanyDTO companyDTOBuyer;
+    CompanyView seller;
+    CompanyView buyer;
     String bankAccountNumber;
     String Comments;
     LocalDateTime dateOfIssue;

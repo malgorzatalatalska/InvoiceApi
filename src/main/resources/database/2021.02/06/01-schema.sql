@@ -19,15 +19,8 @@ CREATE TABLE Invoice (
 CREATE TABLE Company (
     company_id SERIAL PRIMARY KEY,
     company_name VARCHAR(50) NOT NULL,
-    address_id BIGINT,
+    adress VARCHAR(150) NOT NULL,
     nip VARCHAR(10) NOT NULL
-);
-
-CREATE TABLE Adress (
-    address_id SERIAL PRIMARY KEY,
-    street VARCHAR(50),
-    city VARCHAR(20),
-    zip_code VARCHAR(6)
 );
 
 CREATE TABLE Invoice_items (

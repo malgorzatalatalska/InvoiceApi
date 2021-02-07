@@ -16,7 +16,7 @@ public class InvoiceService {
         return null;
     }
 
-    InvoiceDTOOut updateInvoice(InvoiceDTOIn invoiceDTOIn) {
+    InvoiceDTOOut updateInvoice(InvoiceDTOIn invoiceDTOIn,int id) {
         return null;
     }
 

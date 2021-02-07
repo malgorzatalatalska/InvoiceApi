@@ -21,9 +21,9 @@ public class InvoiceController {
         return invoiceService.addInvoice(invoiceDTOIn);
     }
 
-    @PutMapping(value = "invoices")
-    InvoiceDTOOut updateInvoice(@RequestBody InvoiceDTOIn invoiceDTOIn) {
-        return invoiceService.updateInvoice(invoiceDTOIn);
+    @PutMapping(value = "invoices/{id}")
+    InvoiceDTOOut updateInvoice(@RequestBody InvoiceDTOIn invoiceDTOIn,@RequestParam int id) {
+        return invoiceService.updateInvoice(invoiceDTOIn,id);
     }
 
     @DeleteMapping(value = "invoices/{id}")
