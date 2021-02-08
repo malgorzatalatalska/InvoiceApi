@@ -12,10 +12,11 @@ public class InvoiceDTOOut {
     CompanyView seller;
     CompanyView buyer;
     String bankAccountNumber;
-    String Comments;
+    String Comment;
     LocalDateTime dateOfIssue;
     LocalDateTime dateOfSale;
     LocalDateTime dateOfPayment;
     Enum<PaymentMethod> paymentMethod;
+    InvoiceItems invoiceItems;
     LocalDateTime dateOfCreated;
 }

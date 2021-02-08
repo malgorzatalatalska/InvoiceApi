@@ -10,9 +10,10 @@ public class InvoiceDTOIn {
     String sellerNip;
     String buyerNip;
     String bankAccountNumber;
-    String Comments;
+    String Comment;
     LocalDateTime dateOfIssue;
     LocalDateTime dateOfSale;
     LocalDateTime dateOfPayment;
     Enum<PaymentMethod> paymentMethod;
+    InvoiceItems invoiceItems;
 }
