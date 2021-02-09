@@ -1,9 +1,9 @@
-package pl.com.gosia.InvoiceApi.Invoice;
+package pl.com.gosia.api.invoice.invoice;
 
 import lombok.AllArgsConstructor;
-import lombok.Value;
+import lombok.Getter;
 
-
+@Getter
 @AllArgsConstructor
 public enum VatRate {
     RATE_0_PERCENTS(0),
@@ -11,6 +11,6 @@ public enum VatRate {
     RATE_8_PERCENTS(8),
     RATE_23_PERCENTS(23);
 
-    int value;
+    private final int value;
 
 }

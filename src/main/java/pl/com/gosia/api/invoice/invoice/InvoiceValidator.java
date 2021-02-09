@@ -1,9 +1,15 @@
-package pl.com.gosia.InvoiceApi.Invoice;
+package pl.com.gosia.api.invoice.invoice;
+
+import lombok.AllArgsConstructor;
+import lombok.Value;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class Validator {
+@Service
+@AllArgsConstructor
+public class InvoiceValidator {
 
     private boolean isFreeInvoiceNumber(String invoiceNumber, String sellerNip) {
         return false;

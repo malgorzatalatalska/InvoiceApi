@@ -1,7 +1,6 @@
-package pl.com.gosia.InvoiceApi.Company;
+package pl.com.gosia.api.invoice.company;
 
 import lombok.Value;
-import pl.com.gosia.InvoiceApi.Adress.AdressDTO;
 
 @Value
 public class NewCompany {

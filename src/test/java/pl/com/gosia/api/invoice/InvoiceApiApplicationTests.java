@@ -1,4 +1,4 @@
-package pl.com.gosia.InvoiceApi;
+package pl.com.gosia.api.invoice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

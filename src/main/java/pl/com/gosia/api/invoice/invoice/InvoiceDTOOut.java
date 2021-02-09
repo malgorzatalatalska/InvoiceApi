@@ -1,19 +1,22 @@
-package pl.com.gosia.InvoiceApi.Invoice;
+package pl.com.gosia.api.invoice.invoice;
 
 import lombok.Value;
+import pl.com.gosia.api.invoice.company.CompanyView;
 
 import java.time.LocalDateTime;
 
 @Value
-public class InvoiceDTOIn {
+public class InvoiceDTOOut {
+    Long invoiceId;
     String invoiceNumber;
-    String sellerNip;
-    String buyerNip;
+    CompanyView seller;
+    CompanyView buyer;
     String bankAccountNumber;
     String Comment;
     LocalDateTime dateOfIssue;
     LocalDateTime dateOfSale;
     LocalDateTime dateOfPayment;
-    Enum<PaymentMethod> paymentMethod;
+    PaymentMethod paymentMethod;
     InvoiceItems invoiceItems;
+    LocalDateTime dateOfCreated;
 }

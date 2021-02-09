@@ -1,4 +1,4 @@
-package pl.com.gosia.InvoiceApi.Invoice;
+package pl.com.gosia.api.invoice.invoice;
 
 import lombok.Value;
 
@@ -7,9 +7,9 @@ import java.math.BigDecimal;
 @Value
 public class InvoiceItems {
     String name;
-    Enum<Unit> unit;
+    UnitMeasure unitMeasure;
     double quantity;
-    Enum<VatRate> vatRate;
+    VatRate vatRate;
     BigDecimal netPrice;
     BigDecimal netValue;
     BigDecimal grossValue;
