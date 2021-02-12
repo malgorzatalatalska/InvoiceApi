@@ -2,6 +2,8 @@ package pl.com.gosia.api.invoice.invoice;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import pl.com.gosia.api.invoice.invoice.dto.InvoiceDTOIn;
+import pl.com.gosia.api.invoice.invoice.dto.InvoiceDTOOut;
 
 import java.util.List;
 
@@ -22,15 +24,14 @@ public class InvoiceController {
     }
 
     @PutMapping(value = "/api/invoices/{id}")
-    InvoiceDTOOut updateInvoice(@RequestBody InvoiceDTOIn invoiceDTOIn,@RequestParam int id) {
-        return invoiceService.updateInvoice(invoiceDTOIn,id);
+    InvoiceDTOOut updateInvoice(@RequestBody InvoiceDTOIn invoiceDTOIn, @PathVariable int id) {
+        return invoiceService.updateInvoice(invoiceDTOIn, id);
     }
 
     @DeleteMapping(value = "/api/invoices/{id}")
-    boolean deleteInvoice(@RequestParam int id) {
-        return invoiceService.deleteInvoice(id);
+    void deleteInvoice(@PathVariable int id) {
+        invoiceService.deleteInvoice(id);
     }
-
 
 
 }

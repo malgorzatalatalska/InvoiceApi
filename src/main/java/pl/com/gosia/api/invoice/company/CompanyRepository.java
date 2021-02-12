@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import pl.com.gosia.api.invoice.company.dto.CompanyView;
+import pl.com.gosia.api.invoice.company.dto.NewCompany;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Repository
@@ -27,7 +27,7 @@ public class CompanyRepository {
         String sqlQuery = "SELECT * FROM Company WHERE nip = ?";
         return jdbcTemplate.query(sqlQuery,
                 preparedStatement -> preparedStatement.setString(1, nip),
-                companyViewRowMapper).stream().findAny();
+                companyViewRowMapper).stream().findFirst();
     }
 
     CompanyView saveCompany(NewCompany newCompany) {

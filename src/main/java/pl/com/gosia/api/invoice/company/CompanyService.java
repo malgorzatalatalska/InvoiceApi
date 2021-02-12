@@ -3,10 +3,11 @@ package pl.com.gosia.api.invoice.company;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import pl.com.gosia.api.invoice.company.dto.CompanyView;
+import pl.com.gosia.api.invoice.company.dto.MainApiDto;
+import pl.com.gosia.api.invoice.company.dto.NewCompany;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 
@@ -16,7 +17,7 @@ public class CompanyService {
 
     private final CompanyRepository companyRepository;
 
-    CompanyView getCompany(String nip) {
+    public CompanyView getCompany(String nip) {
         String clearTransferNip = clearTransferNip(nip);
         return companyRepository.findCompanyByNip(clearTransferNip).orElseGet(() -> findAndSaveCompanyWithApi(clearTransferNip));
     }

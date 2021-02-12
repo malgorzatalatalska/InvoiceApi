@@ -1,4 +1,4 @@
-package pl.com.gosia.api.invoice.invoice;
+package pl.com.gosia.api.invoice.invoice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

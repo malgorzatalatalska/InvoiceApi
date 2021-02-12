@@ -1,4 +1,4 @@
-package pl.com.gosia.api.invoice.company;
+package pl.com.gosia.api.invoice.company.dto;
 
 import lombok.Setter;
 import lombok.Value;

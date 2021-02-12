@@ -29,7 +29,7 @@ CREATE TABLE Invoice_items (
     name VARCHAR(30) NOT NULL,
     unit VARCHAR(10) NOT NULL,
     quantity DECIMAL NOT NULL,
-    vat_rate INTEGER NOT NULL,
+    vat_rate VARCHAR(20) NOT NULL,
     net_price MONEY NOT NULL,
     net_value MONEY NOT NULL,
     gross_value MONEY NOT NULL
