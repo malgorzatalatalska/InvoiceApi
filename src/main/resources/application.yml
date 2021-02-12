@@ -1,0 +1,16 @@
+spring:
+  liquibase.change-log: classpath:liquibase-changeLog.xml
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres?useUnicode=true&serverTimezone=UTC
+    username: postgres
+    password: tabaluga1
+
+sql:
+  invoice:
+    select-all: >
+      select
+        invoice_id, invoice_number, seller_id, buyer_id, bank_account_number, "comments",
+        date_of_issue, date_of_sale, date_of_payment, payment_method, date_of_created, date_of_update,
+        seller.company_id as "seller.company_id", seller.company_name as "seller.company_name", seller.adress as "seller.adress", seller.nip as "seller.nip",
+        buyer.company_id as "buyer.company_id", buyer.company_name as "buyer.company_name", buyer.adress as "buyer.adress", buyer.nip as "buyer.nip"
+      from invoice i left join company seller on i.seller_id = seller.company_id left join company buyer on i.buyer_id = buyer.company_id

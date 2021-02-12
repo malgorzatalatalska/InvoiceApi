@@ -1,5 +1,6 @@
 package pl.com.gosia.api.invoice.invoice.dto;
 
+import lombok.Builder;
 import lombok.Value;
 import pl.com.gosia.api.invoice.company.dto.CompanyView;
 

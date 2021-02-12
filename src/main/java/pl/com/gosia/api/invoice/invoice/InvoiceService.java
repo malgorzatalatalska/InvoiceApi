@@ -2,7 +2,6 @@ package pl.com.gosia.api.invoice.invoice;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.com.gosia.api.invoice.company.CompanyRepository;
 import pl.com.gosia.api.invoice.company.CompanyService;
 import pl.com.gosia.api.invoice.company.dto.CompanyView;
 import pl.com.gosia.api.invoice.invoice.dto.InvoiceDTOCompany;
