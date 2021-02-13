@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Value
+@Builder
 public class InvoiceDTOCompany {
     String invoiceNumber;
     CompanyView seller;

@@ -23,8 +23,7 @@ public class InvoiceRepository {
 
     RowMapper<InvoiceDTOOut> invoiceRowMapper() {
         return (rs, rowNum) -> {
-            String sqlQuery = "SELECT * FROM Invoice_items WHERE invoice_id = ?";
-            List<InvoiceItems> invoiceItemsList = jdbcTemplate.query(sqlQuery,
+            List<InvoiceItems> invoiceItemsList = jdbcTemplate.query(invoiceStatement.getSelectInvoiceItemsByInvoiceId(),
                     preparedStatement -> preparedStatement.setLong(1, rs.getLong("invoice_id")),
                     INVOICE_ITEMS_ROW_MAPPER);
             return createInvoiceDtoOut(rs, invoiceItemsList);
@@ -32,35 +31,27 @@ public class InvoiceRepository {
     }
 
     List<InvoiceDTOOut> findAllInvoice() {
-        return jdbcTemplate.query(invoiceStatement.getSelectAllInvoices(), invoiceRowMapper());
+        return jdbcTemplate.query(invoiceStatement.getSelectInvoices(), invoiceRowMapper());
     }
 
     @Transactional
-    public void deleteInvoice(int invoice_id) {
-        String sqlQuery = "DELETE FROM Invoice_items WHERE invoice_id = ?";
-        jdbcTemplate.update(sqlQuery, invoice_id);
-
-        String sqlQuery2 = "DELETE FROM Invoice WHERE invoice_id = ?";
-        jdbcTemplate.update(sqlQuery2, invoice_id);
+    public void deleteInvoice(int invoiceId) {
+        jdbcTemplate.update(invoiceStatement.getDeleteInvoiceItems(), invoiceId);
+        jdbcTemplate.update(invoiceStatement.getDeleteInvoice(), invoiceId);
     }
 
     @Transactional
     public InvoiceDTOOut saveInvoice(InvoiceDTOCompany invoiceDTOCompany) {
         //moze wystapic null w comments,bankAccount jakos trzeba to zabezpieczyc przed nullpointerexception
-        String sqlQuery2 = "INSERT INTO Invoice (invoice_number, seller_id, buyer_id, bank_account_number,comments,date_of_issue," +
-                "date_of_sale,date_of_payment,payment_method,date_of_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(invoiceStatementSetter(invoiceDTOCompany, sqlQuery2), generatedKeyHolder);
+        jdbcTemplate.update(invoiceStatementSetter(invoiceDTOCompany, invoiceStatement.getInsertInvoice()), generatedKeyHolder);
 
         long invoiceId = Objects.requireNonNull(generatedKeyHolder.getKey()).longValue();
 
         List<InvoiceItems> invoiceItemsList = invoiceDTOCompany.getInvoiceItems();
 
-        String sqlQuery = "INSERT INTO Invoice_items (invoice_id, name, unit, quantity,vat_rate,net_price," +
-                "net_value,gross_value) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-        jdbcTemplate.batchUpdate(sqlQuery, invoiceItemsBatchStatementSetter(invoiceId, invoiceItemsList));
+        jdbcTemplate.batchUpdate(invoiceStatement.getInsertInvoiceItems(), invoiceItemsBatchStatementSetter(invoiceId, invoiceItemsList));
 
         return findAllInvoice().stream()
                 .filter(invoiceDTOOut -> invoiceDTOOut.getInvoiceId().equals(invoiceId))

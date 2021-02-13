@@ -1,10 +1,12 @@
 package pl.com.gosia.api.invoice.invoice.dto;
 
+import lombok.Builder;
 import lombok.Value;
 
 import java.math.BigDecimal;
 
 @Value
+@Builder
 public class InvoiceItems {
     String name;
     UnitMeasure unitMeasure;

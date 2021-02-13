@@ -15,15 +15,15 @@ import java.util.List;
 public class InvoiceJdbcUtils {
 
     public static final RowMapper<InvoiceItems> INVOICE_ITEMS_ROW_MAPPER = (rs, rowNum) ->
-            new InvoiceItems(
-                    rs.getString("name"),
-                    UnitMeasure.valueOf(rs.getString("unit")),
-                    rs.getDouble("quantity"),
-                    VatRate.valueOf(rs.getString("vat_rate")),
-                    rs.getBigDecimal("net_price"),
-                    rs.getBigDecimal("net_value"),
-                    rs.getBigDecimal("gross_value")
-            );
+            InvoiceItems.builder()
+                    .name(rs.getString("name"))
+                    .unitMeasure(UnitMeasure.valueOf(rs.getString("unit")))
+                    .quantity(rs.getDouble("quantity"))
+                    .vatRate(VatRate.valueOf(rs.getString("vat_rate")))
+                    .netPrice(rs.getBigDecimal("net_price"))
+                    .netValue(rs.getBigDecimal("net_value"))
+                    .grossValue(rs.getBigDecimal("gross_value"))
+                    .build();
 
     public static BatchPreparedStatementSetter invoiceItemsBatchStatementSetter(long invoice_id, List<InvoiceItems> invoiceItemsList) {
         return new BatchPreparedStatementSetter() {
@@ -66,27 +66,34 @@ public class InvoiceJdbcUtils {
     }
 
     public static InvoiceDTOOut createInvoiceDtoOut(java.sql.ResultSet rs, List<InvoiceItems> invoiceItemsList) throws SQLException {
-        return new InvoiceDTOOut(
-                rs.getLong("invoice_id"),
-                rs.getString("invoice_number"),
-                new CompanyView(
-                        rs.getLong("seller.company_id"),
-                        rs.getString("seller.company_name"),
-                        rs.getString("seller.adress"),
-                        rs.getString("seller.nip")),
-                new CompanyView(
-                        rs.getLong("buyer.company_id"),
-                        rs.getString("buyer.company_name"),
-                        rs.getString("buyer.adress"),
-                        rs.getString("buyer.nip")),
-                rs.getString("bank_account_number"),
-                rs.getString("comments"),
-                rs.getTimestamp("date_of_issue").toLocalDateTime(),
-                rs.getTimestamp("date_of_sale").toLocalDateTime(),
-                rs.getTimestamp("date_of_payment").toLocalDateTime(),
-                PaymentMethod.valueOf(rs.getString("payment_method")),
-                invoiceItemsList,
-                rs.getTimestamp("date_of_created").toLocalDateTime()
-        );
+        return InvoiceDTOOut
+                .builder()
+                .invoiceId(rs.getLong("invoice_id"))
+                .invoiceNumber(rs.getString("invoice_number"))
+                .seller(
+                        CompanyView.builder()
+                                .companyId(rs.getLong("seller.company_id"))
+                                .companyName(rs.getString("seller.company_name"))
+                                .adress(rs.getString("seller.adress"))
+                                .nip(rs.getString("seller.nip"))
+                                .build()
+                )
+                .buyer(
+                        CompanyView.builder()
+                                .companyId(rs.getLong("buyer.company_id"))
+                                .companyName(rs.getString("buyer.company_name"))
+                                .adress(rs.getString("buyer.adress"))
+                                .nip(rs.getString("buyer.nip"))
+                                .build()
+                )
+                .bankAccountNumber(rs.getString("bank_account_number"))
+                .comments(rs.getString("comments"))
+                .dateOfIssue(rs.getTimestamp("date_of_issue").toLocalDateTime())
+                .dateOfSale(rs.getTimestamp("date_of_sale").toLocalDateTime())
+                .dateOfPayment(rs.getTimestamp("date_of_payment").toLocalDateTime())
+                .paymentMethod(PaymentMethod.valueOf(rs.getString("payment_method")))
+                .invoiceItemsList(invoiceItemsList)
+                .dateOfCreated(rs.getTimestamp("date_of_created").toLocalDateTime())
+                .build();
     }
 }

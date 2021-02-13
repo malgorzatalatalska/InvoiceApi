@@ -3,7 +3,6 @@ package pl.com.gosia.api.invoice.invoice;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.com.gosia.api.invoice.company.CompanyService;
-import pl.com.gosia.api.invoice.company.dto.CompanyView;
 import pl.com.gosia.api.invoice.invoice.dto.InvoiceDTOCompany;
 import pl.com.gosia.api.invoice.invoice.dto.InvoiceDTOIn;
 import pl.com.gosia.api.invoice.invoice.dto.InvoiceDTOOut;
@@ -16,22 +15,29 @@ public class InvoiceService {
     private final InvoiceRepository invoiceRepository;
     private final CompanyService companyService;
 
-     List<InvoiceDTOOut> findAllInvoices() {
+    List<InvoiceDTOOut> findAllInvoices() {
         return invoiceRepository.findAllInvoice();
     }
 
     InvoiceDTOOut addInvoice(InvoiceDTOIn invoiceDTOIn) {
-        // invoiceDTOIn -> InvoiceDTOCopmany
-        CompanyView seller = companyService.getCompany(invoiceDTOIn.getSellerNip());
-        CompanyView buyer = companyService.getCompany(invoiceDTOIn.getBuyerNip());
-
-        InvoiceDTOCompany invoiceDTOCompany = new InvoiceDTOCompany(invoiceDTOIn.getInvoiceNumber(), seller, buyer, invoiceDTOIn.getBankAccountNumber(), invoiceDTOIn.getComments(),
-                invoiceDTOIn.getDateOfIssue(), invoiceDTOIn.getDateOfSale(), invoiceDTOIn.getDateOfPayment(), invoiceDTOIn.getPaymentMethod(), invoiceDTOIn.getInvoiceItems());
+        InvoiceDTOCompany invoiceDTOCompany =
+                InvoiceDTOCompany.builder()
+                        .invoiceNumber(invoiceDTOIn.getInvoiceNumber())
+                        .seller(companyService.getCompany(invoiceDTOIn.getSellerNip()))
+                        .buyer(companyService.getCompany(invoiceDTOIn.getBuyerNip()))
+                        .bankAccountNumber(invoiceDTOIn.getBankAccountNumber())
+                        .comments(invoiceDTOIn.getComments())
+                        .dateOfIssue(invoiceDTOIn.getDateOfIssue())
+                        .dateOfSale(invoiceDTOIn.getDateOfSale())
+                        .dateOfPayment(invoiceDTOIn.getDateOfPayment())
+                        .paymentMethod(invoiceDTOIn.getPaymentMethod())
+                        .invoiceItems(invoiceDTOIn.getInvoiceItems())
+                        .build();
 
         return invoiceRepository.saveInvoice(invoiceDTOCompany);
     }
 
-    InvoiceDTOOut updateInvoice(InvoiceDTOIn invoiceDTOIn,int id) {
+    InvoiceDTOOut updateInvoice(InvoiceDTOIn invoiceDTOIn, int id) {
         return null;
     }
 

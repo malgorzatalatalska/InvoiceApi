@@ -7,10 +7,31 @@ spring:
 
 sql:
   invoice:
-    select-all: >
+    select-invoice: >
       select
         invoice_id, invoice_number, seller_id, buyer_id, bank_account_number, "comments",
         date_of_issue, date_of_sale, date_of_payment, payment_method, date_of_created, date_of_update,
         seller.company_id as "seller.company_id", seller.company_name as "seller.company_name", seller.adress as "seller.adress", seller.nip as "seller.nip",
         buyer.company_id as "buyer.company_id", buyer.company_name as "buyer.company_name", buyer.adress as "buyer.adress", buyer.nip as "buyer.nip"
       from invoice i left join company seller on i.seller_id = seller.company_id left join company buyer on i.buyer_id = buyer.company_id
+    select-invoice-items-by-invoice-id: >
+      select * from invoice_items where invoice_id = ?
+    insert-invoice: >
+      insert into
+        invoice (invoice_number, seller_id, buyer_id, bank_account_number,comments,date_of_issue,date_of_sale,
+        date_of_payment,payment_method,date_of_created)
+      values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    insert-invoice-items: >
+      insert into
+        invoice_items (invoice_id, name, unit, quantity,vat_rate,net_price,net_value,gross_value)
+      values (?, ?, ?, ?, ?, ?, ?, ?)
+    delete-invoice: >
+      delete from invoice where invoice_id = ?
+    delete-invoice-items: >
+      delete from invoice_items where invoice_id = ?
+
+  company:
+    select-company-by-nip: >
+      select * from company where nip = ?
+    insert-company: >
+      insert into company (company_name, adress, nip) values (?, ?, ?)
