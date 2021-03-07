@@ -4,6 +4,16 @@ spring:
     url: jdbc:postgresql://localhost:5432/postgres?useUnicode=true&serverTimezone=UTC
     username: postgres
     password: tabaluga1
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 354328717354-r2u949p6gv02rp6tt4thpeao39a13a9m.apps.googleusercontent.com
+            client-secret: pNPszfZkmyn-nNRtJHKavHIo
+
+invoice:
+  api-url: https://wl-api.mf.gov.pl/api/search/nip/
 
 sql:
   invoice:
@@ -14,6 +24,14 @@ sql:
         seller.company_id as "seller.company_id", seller.company_name as "seller.company_name", seller.adress as "seller.adress", seller.nip as "seller.nip",
         buyer.company_id as "buyer.company_id", buyer.company_name as "buyer.company_name", buyer.adress as "buyer.adress", buyer.nip as "buyer.nip"
       from invoice i left join company seller on i.seller_id = seller.company_id left join company buyer on i.buyer_id = buyer.company_id
+    select-invoice-by-invoice-id: >
+      select
+        invoice_id, invoice_number, seller_id, buyer_id, bank_account_number, "comments",
+        date_of_issue, date_of_sale, date_of_payment, payment_method, date_of_created, date_of_update,
+        seller.company_id as "seller.company_id", seller.company_name as "seller.company_name", seller.adress as "seller.adress", seller.nip as "seller.nip",
+        buyer.company_id as "buyer.company_id", buyer.company_name as "buyer.company_name", buyer.adress as "buyer.adress", buyer.nip as "buyer.nip"
+      from invoice i left join company seller on i.seller_id = seller.company_id left join company buyer on i.buyer_id = buyer.company_id
+      where invoice_id = ?
     select-invoice-items-by-invoice-id: >
       select * from invoice_items where invoice_id = ?
     insert-invoice: >
@@ -25,6 +43,10 @@ sql:
       insert into
         invoice_items (invoice_id, name, unit, quantity,vat_rate,net_price,net_value,gross_value)
       values (?, ?, ?, ?, ?, ?, ?, ?)
+    update-invoice-by-invoice-id: >
+      update invoice set invoice_number = ?, seller_id = ?, buyer_id = ?, bank_account_number = ?, comments = ?,
+       date_of_issue = ?, date_of_sale = ?, date_of_payment = ?, payment_method = ?, date_of_update = ?
+      where invoice_id = ?
     delete-invoice: >
       delete from invoice where invoice_id = ?
     delete-invoice-items: >

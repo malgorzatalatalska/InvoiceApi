@@ -9,7 +9,8 @@ import java.util.List;
 
 @Value
 @Builder
-public class InvoiceDTOCompany {
+public class InvoiceView {
+    Long invoiceId;
     String invoiceNumber;
     CompanyView seller;
     CompanyView buyer;
@@ -19,5 +20,6 @@ public class InvoiceDTOCompany {
     LocalDateTime dateOfSale;
     LocalDateTime dateOfPayment;
     PaymentMethod paymentMethod;
-    List<InvoiceItems> invoiceItems;
+    List<InvoiceItem> invoiceItemList;
+    LocalDateTime dateOfCreated;
 }

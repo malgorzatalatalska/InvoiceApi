@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Value
-public class InvoiceDTOIn {
+public class InvoiceRequest {
     String invoiceNumber;
     String sellerNip;
     String buyerNip;
@@ -16,5 +16,5 @@ public class InvoiceDTOIn {
     LocalDateTime dateOfSale;
     LocalDateTime dateOfPayment;
     PaymentMethod paymentMethod;
-    List<InvoiceItems> invoiceItems;
+    List<InvoiceItem> invoiceItems;
 }

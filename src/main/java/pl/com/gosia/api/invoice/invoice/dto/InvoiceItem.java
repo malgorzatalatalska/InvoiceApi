@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 @Value
 @Builder
-public class InvoiceItems {
+public class InvoiceItem {
     String name;
     UnitMeasure unitMeasure;
     double quantity;

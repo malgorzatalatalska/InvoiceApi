@@ -6,13 +6,12 @@ import lombok.Value;
 public class InvoiceStatement {
 
     String selectInvoices;
+    String selectInvoicesByInvoiceId;
     String selectInvoiceItemsByInvoiceId;
     String insertInvoice;
     String insertInvoiceItems;
+    String updateInvoiceByInvoiceId;
     String deleteInvoice;
     String deleteInvoiceItems;
-
-
-
 
 }

@@ -2,49 +2,34 @@ package pl.com.gosia.api.invoice.company;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import pl.com.gosia.api.invoice.company.dto.CompanyView;
-import pl.com.gosia.api.invoice.company.dto.MainApiDto;
-import pl.com.gosia.api.invoice.company.dto.NewCompany;
 
-import java.time.LocalDate;
-import java.util.Optional;
+import static com.google.common.base.Preconditions.checkArgument;
+import static pl.com.gosia.api.invoice.company.NipUtils.clearNip;
+import static pl.com.gosia.api.invoice.company.NipUtils.validateNip;
 
 @Service
 @AllArgsConstructor
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
+    private final CompanyApiClient companyApiClient;
 
-    public CompanyView getCompany(String nip) {
-        final String clearTransferNip = clearTransferNip(nip);
-        return companyRepository.findCompanyByNip(clearTransferNip).orElseGet(() -> findAndSaveCompanyWithApi(clearTransferNip));
+    public CompanyView findCompany(String nip) {
+
+        checkArgument(nip != null, "Expected not null nip");
+
+        final var clearedNip = clearNip(nip);
+
+        validateNip(clearedNip);
+
+        return companyRepository.findCompanyByNip(clearedNip)
+                .orElseGet(() -> findInPublicApi(clearedNip));
     }
 
-    private String clearTransferNip(String nip) {
-        final String clearNip = nip.replaceAll("\\D", "");
-        if (clearNip.length() != 10) {
-            throw new IllegalArgumentException("Incorrect number of digits in nip");
-        }
-        return clearNip;
-    }
-
-    private CompanyView findAndSaveCompanyWithApi(String nip) {
-        NewCompany newCompany = findCompanyWithApi(nip).orElseThrow(() -> new IllegalArgumentException("Incorrect nip"));
+    private CompanyView findInPublicApi(String nip) {
+        final var newCompany = companyApiClient.findCompanyWithApi(nip);
         return companyRepository.saveCompany(newCompany);
     }
-
-    private Optional<NewCompany> findCompanyWithApi(String nip) {
-        final String apiUrl = "https://wl-api.mf.gov.pl/api/search/nip/";
-        final String currentDate = LocalDate.now().toString();
-        MainApiDto mainApiDto = new RestTemplate().getForObject(apiUrl + nip + "?date=" + currentDate, MainApiDto.class);
-        NewCompany newCompany = NewCompany.builder()
-                .companyName(mainApiDto.getResult().getSubject().getName())
-                .adress(mainApiDto.getResult().getSubject().getWorkingAddress())
-                .nip(mainApiDto.getResult().getSubject().getNip()).build();
-
-        return Optional.ofNullable(newCompany);
-    }
-
 
 }

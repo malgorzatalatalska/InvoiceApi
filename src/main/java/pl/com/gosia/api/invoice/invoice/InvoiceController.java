@@ -1,12 +1,14 @@
 package pl.com.gosia.api.invoice.invoice;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import pl.com.gosia.api.invoice.invoice.dto.InvoiceDTOIn;
-import pl.com.gosia.api.invoice.invoice.dto.InvoiceDTOOut;
+import pl.com.gosia.api.invoice.invoice.dto.InvoiceRequest;
+import pl.com.gosia.api.invoice.invoice.dto.InvoiceView;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @AllArgsConstructor
 public class InvoiceController {
@@ -14,23 +16,35 @@ public class InvoiceController {
     private final InvoiceService invoiceService;
 
     @GetMapping(value = "/api/invoices")
-    List<InvoiceDTOOut> findAllInvoices() {
+    List<InvoiceView> findAllInvoices() {
+
+        log.debug("Querying all invoices");
+
         return invoiceService.findAllInvoices();
     }
 
     @PostMapping(value = "/api/invoices")
-    InvoiceDTOOut addInvoice(@RequestBody InvoiceDTOIn invoiceDTOIn) {
-        return invoiceService.addInvoice(invoiceDTOIn);
+    InvoiceView addInvoice(@RequestBody InvoiceRequest invoiceRequest) {
+
+        log.debug("Adding new invoice from request: {}", invoiceRequest);
+
+        return invoiceService.addInvoice(invoiceRequest);
     }
 
-    @PutMapping(value = "/api/invoices/{id}")
-    InvoiceDTOOut updateInvoice(@RequestBody InvoiceDTOIn invoiceDTOIn, @PathVariable int id) {
-        return invoiceService.updateInvoice(invoiceDTOIn, id);
+    @PutMapping(value = "/api/invoices/{invoiceId}")
+    InvoiceView updateInvoice(@RequestBody InvoiceRequest invoiceRequest, @PathVariable long invoiceId) {
+
+        log.debug("Updating invoice id: {} with {}", invoiceId, invoiceRequest);
+
+        return invoiceService.updateInvoice(invoiceRequest, invoiceId);
     }
 
-    @DeleteMapping(value = "/api/invoices/{id}")
-    void deleteInvoice(@PathVariable int id) {
-        invoiceService.deleteInvoice(id);
+    @DeleteMapping(value = "/api/invoices/{invoiceId}")
+    void deleteInvoice(@PathVariable long invoiceId) {
+
+        log.debug("Deleting invoice id: {}", invoiceId);
+
+        invoiceService.deleteInvoice(invoiceId);
     }
 
 
