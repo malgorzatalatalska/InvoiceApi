@@ -5,14 +5,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 @lombok.Value
-public class CompanyStatement {
+class CompanyStatement {
 
-    public CompanyStatement(@Value("${sql.company.select-company-by-nip}") String selectCompanyByNip,
-                            @Value("${sql.company.insert-company}") String insertCompany) {
-        this.selectCompanyByNip = selectCompanyByNip;
-        this.insertCompany = insertCompany;
+    CompanyStatement(@Value("${sql.company.select-company-by-nip}") String selectCompanyByNipQuery,
+                            @Value("${sql.company.insert-company}") String insertCompanyQuery) {
+        this.selectCompanyByNipQuery = selectCompanyByNipQuery;
+        this.insertCompanyQuery = insertCompanyQuery;
     }
 
-    String selectCompanyByNip;
-    String insertCompany;
+    String selectCompanyByNipQuery;
+    String insertCompanyQuery;
 }

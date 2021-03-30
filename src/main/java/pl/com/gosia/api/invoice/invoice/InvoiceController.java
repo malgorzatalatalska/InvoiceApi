@@ -19,7 +19,7 @@ public class InvoiceController {
     List<InvoiceView> findAllInvoices() {
 
         log.debug("Querying all invoices");
-
+        
         return invoiceService.findAllInvoices();
     }
 

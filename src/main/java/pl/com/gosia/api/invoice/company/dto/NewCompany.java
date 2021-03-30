@@ -7,6 +7,6 @@ import lombok.Value;
 @Builder
 public class NewCompany {
     String companyName;
-    String adress;
+    String address;
     String nip;
 }

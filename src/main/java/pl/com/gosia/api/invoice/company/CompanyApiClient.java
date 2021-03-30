@@ -9,7 +9,7 @@ import pl.com.gosia.api.invoice.company.dto.NewCompany;
 import java.time.LocalDate;
 
 @Service
-public class CompanyApiClient {
+class CompanyApiClient {
 
     private final String apiUrl;
 
@@ -17,7 +17,7 @@ public class CompanyApiClient {
         this.apiUrl = apiUrl;
     }
 
-    public NewCompany findCompanyWithApi(String nip) {
+    NewCompany findCompanyWithApi(String nip) {
 
         final var currentDate = LocalDate.now().toString();
 
@@ -29,7 +29,7 @@ public class CompanyApiClient {
 
         return NewCompany.builder()
                 .companyName(companyApiDto.getResult().getSubject().getName())
-                .adress(companyApiDto.getResult().getSubject().getWorkingAddress())
+                .address(companyApiDto.getResult().getSubject().getWorkingAddress())
                 .nip(companyApiDto.getResult().getSubject().getNip()).build();
     }
 

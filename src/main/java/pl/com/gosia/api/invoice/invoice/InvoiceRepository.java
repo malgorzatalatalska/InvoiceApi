@@ -25,16 +25,20 @@ public class InvoiceRepository {
     private final InvoiceStatement invoiceStatement;
 
     List<InvoiceView> findAllInvoice() {
-        final var sqlQuerySelectInvoices = invoiceStatement.getSelectInvoices();
 
-        return jdbcTemplate.query(sqlQuerySelectInvoices, invoiceRowMapper());
+        final var selectInvoicesQuery = invoiceStatement.getSelectInvoicesQuery();
+
+        return jdbcTemplate.query(
+                selectInvoicesQuery,
+                invoiceRowMapper());
     }
 
     Optional<InvoiceView> findInvoiceById(long invoiceId) {
-        final var sqlQuerySelectInvoicesByInvoiceId = invoiceStatement.getSelectInvoicesByInvoiceId();
+
+        final var selectInvoicesByInvoiceIdQuery = invoiceStatement.getSelectInvoicesByInvoiceIdQuery();
 
         return jdbcTemplate.query(
-                sqlQuerySelectInvoicesByInvoiceId,
+                selectInvoicesByInvoiceIdQuery,
                 preparedStatement -> preparedStatement.setLong(1, invoiceId),
                 invoiceRowMapper())
                 .stream()
@@ -43,9 +47,10 @@ public class InvoiceRepository {
 
     @Transactional
     public InvoiceView updateInvoice(InvoiceEntity invoiceEntity, long invoiceId) {
-        final var sqlQueryUpdateInvoiceByInvoiceId = invoiceStatement.getUpdateInvoiceByInvoiceId();
-        final var sqlQueryDeleteInvoiceItems = invoiceStatement.getDeleteInvoiceItems();
-        final var sqlQueryInsertInvoiceItems = invoiceStatement.getInsertInvoiceItems();
+
+        final var sqlQueryUpdateInvoiceByInvoiceId = invoiceStatement.getUpdateInvoiceByInvoiceIdQuery();
+        final var sqlQueryDeleteInvoiceItems = invoiceStatement.getDeleteInvoiceItemsQuery();
+        final var sqlQueryInsertInvoiceItems = invoiceStatement.getInsertInvoiceItemsQuery();
 
         if (findInvoiceById(invoiceId).isEmpty()) {
             throw new IllegalArgumentException("Invoice for id: " + invoiceId + " not found");
@@ -63,7 +68,7 @@ public class InvoiceRepository {
     @Transactional
     public InvoiceView saveInvoice(InvoiceEntity invoiceEntity) {
 
-        final var sqlQueryInsertInvoice = invoiceStatement.getInsertInvoice();
+        final var sqlQueryInsertInvoice = invoiceStatement.getInsertInvoiceQuery();
         final var invoiceStatementCreator =
                 invoiceStatementCreator(invoiceEntity, sqlQueryInsertInvoice);
         final var generatedKeyHolder = new GeneratedKeyHolder();
@@ -72,7 +77,7 @@ public class InvoiceRepository {
 
         final var invoiceId = requireNonNull(generatedKeyHolder.getKey()).longValue();
 
-        final var sqlQueryInsertInvoiceItems = invoiceStatement.getInsertInvoiceItems();
+        final var sqlQueryInsertInvoiceItems = invoiceStatement.getInsertInvoiceItemsQuery();
         final var batchStatementSetter =
                 invoiceItemsBatchStatementSetter(invoiceId, invoiceEntity.getInvoiceItems());
 
@@ -84,15 +89,15 @@ public class InvoiceRepository {
 
     @Transactional
     public void deleteInvoice(long invoiceId) {
-        final var sqlQueryDeleteInvoiceItems = invoiceStatement.getDeleteInvoiceItems();
-        final var sqlQueryDeleteInvoice = invoiceStatement.getDeleteInvoice();
+        final var sqlQueryDeleteInvoiceItems = invoiceStatement.getDeleteInvoiceItemsQuery();
+        final var sqlQueryDeleteInvoice = invoiceStatement.getDeleteInvoiceQuery();
 
         jdbcTemplate.update(sqlQueryDeleteInvoiceItems, invoiceId);
         jdbcTemplate.update(sqlQueryDeleteInvoice, invoiceId);
     }
 
     private RowMapper<InvoiceView> invoiceRowMapper() {
-        final var sqlQuerySelectInvoiceItemsByInvoiceId = invoiceStatement.getSelectInvoiceItemsByInvoiceId();
+        final var sqlQuerySelectInvoiceItemsByInvoiceId = invoiceStatement.getSelectInvoiceItemsByInvoiceIdQuery();
 
         return (rs, rowNum) -> {
             List<InvoiceItem> invoiceItemList = jdbcTemplate.query(

@@ -1,6 +1,5 @@
 package pl.com.gosia.api.invoice.company;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -13,24 +12,30 @@ import static pl.com.gosia.api.invoice.company.CompanyJdbcUtils.COMPANY_VIEW_ROW
 
 @Repository
 @RequiredArgsConstructor
-public class CompanyRepository {
+class CompanyRepository {
 
     private final JdbcTemplate jdbcTemplate;
     private final CompanyStatement companyStatement;
 
     Optional<CompanyView> findCompanyByNip(String nip) {
-        final var sqlQuerySelectCompanyByNip = companyStatement.getSelectCompanyByNip();
 
-        return jdbcTemplate.query(sqlQuerySelectCompanyByNip,
+        final var selectCompanyByNipQuery = companyStatement.getSelectCompanyByNipQuery();
+
+        return jdbcTemplate.query(
+                selectCompanyByNipQuery,
                 preparedStatement -> preparedStatement.setString(1, nip),
-                COMPANY_VIEW_ROW_MAPPER).stream().findFirst();
+                COMPANY_VIEW_ROW_MAPPER)
+                .stream().findFirst();
     }
 
     CompanyView saveCompany(NewCompany newCompany) {
-        final var sqlQueryInsertCompany = companyStatement.getInsertCompany();
-        jdbcTemplate.update(sqlQueryInsertCompany, newCompany.getCompanyName(), newCompany.getAdress(), newCompany.getNip());
+
+        final var insertCompanyQuery = companyStatement.getInsertCompanyQuery();
+
+        jdbcTemplate.update(insertCompanyQuery, newCompany.getCompanyName(), newCompany.getAddress(), newCompany.getNip());
 
         return findCompanyByNip(newCompany.getNip())
-                .orElseThrow(() -> new IllegalArgumentException("Company save error, not found in the database"));
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Could not find company for NIP: " + newCompany.getNip()));
     }
 }

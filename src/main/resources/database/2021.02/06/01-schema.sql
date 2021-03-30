@@ -19,7 +19,7 @@ CREATE TABLE Invoice (
 CREATE TABLE Company (
     company_id SERIAL PRIMARY KEY,
     company_name TEXT NOT NULL,
-    adress TEXT,
+    address TEXT,
     nip VARCHAR(10) NOT NULL
 );
 

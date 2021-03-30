@@ -21,14 +21,20 @@ public class CompanyService {
 
         final var clearedNip = clearNip(nip);
 
-        validateNip(clearedNip);
+        return validateNip(clearedNip)
+                .map(this::fetchCompany)
+                .getOrElseThrow(error -> new IllegalArgumentException(error));
+    }
 
-        return companyRepository.findCompanyByNip(clearedNip)
-                .orElseGet(() -> findInPublicApi(clearedNip));
+    private CompanyView fetchCompany(String validNip) {
+        return companyRepository.findCompanyByNip(validNip)
+                .orElseGet(() -> findInPublicApi(validNip));
     }
 
     private CompanyView findInPublicApi(String nip) {
+
         final var newCompany = companyApiClient.findCompanyWithApi(nip);
+
         return companyRepository.saveCompany(newCompany);
     }
 

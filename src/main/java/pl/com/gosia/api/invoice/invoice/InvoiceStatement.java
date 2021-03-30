@@ -5,13 +5,13 @@ import lombok.Value;
 @Value
 public class InvoiceStatement {
 
-    String selectInvoices;
-    String selectInvoicesByInvoiceId;
-    String selectInvoiceItemsByInvoiceId;
-    String insertInvoice;
-    String insertInvoiceItems;
-    String updateInvoiceByInvoiceId;
-    String deleteInvoice;
-    String deleteInvoiceItems;
+    String selectInvoicesQuery;
+    String selectInvoicesByInvoiceIdQuery;
+    String selectInvoiceItemsByInvoiceIdQuery;
+    String insertInvoiceQuery;
+    String insertInvoiceItemsQuery;
+    String updateInvoiceByInvoiceIdQuery;
+    String deleteInvoiceQuery;
+    String deleteInvoiceItemsQuery;
 
 }

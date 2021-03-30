@@ -9,6 +9,6 @@ import lombok.Value;
 public class CompanyView {
     Long companyId;
     String companyName;
-    String adress;
+    String address;
     String nip;
 }
